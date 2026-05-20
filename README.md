@@ -102,6 +102,7 @@ openshield/
 
 ---
 
+
 ## Quick Start
 
 ```bash
@@ -169,3 +170,18 @@ MIT — free to use, modify, and distribute.
 ---
 
 > Built with ❤️ by security engineers and students who believe cloud security tooling should be accessible to everyone.
+
+---
+
+## 📚 Learn OpenShield
+
+Explore the OpenShield learning portal to understand:
+
+- Azure CSPM fundamentals
+- OpenShield architecture
+- Compliance mappings
+- Remediation workflows
+- Contributor onboarding
+- Documentation navigation
+
+👉 [OpenShield Learn](docs/learn/index.html)
