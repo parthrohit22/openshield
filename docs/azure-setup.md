@@ -71,6 +71,12 @@ For the Conditional Access MFA rule (AZ-IDN-002), the service principal needs th
 # Get the service principal object ID
 SP_OBJECT_ID=$(az ad sp show --id <YOUR_APP_ID> --query id --output tsv)
 
+# Get the Microsoft Graph service principal object ID
+GRAPH_SP_ID=$(az ad sp list \
+  --filter "appId eq '00000003-0000-0000-c000-000000000000'" \
+  --query "[0].id" \
+  --output tsv)
+
 # Grant Policy.Read.All application permission
 # This requires a Global Administrator to consent
 az rest \
@@ -78,7 +84,7 @@ az rest \
   --uri "https://graph.microsoft.com/v1.0/servicePrincipals/$SP_OBJECT_ID/appRoleAssignments" \
   --body '{
     "principalId": "'$SP_OBJECT_ID'",
-    "resourceId": "<GRAPH_SERVICE_PRINCIPAL_ID>",
+    "resourceId": "'$GRAPH_SP_ID'",
     "appRoleId": "246dd0d5-5bd0-4def-940b-0421030a5b68"
   }'
 ```
@@ -89,10 +95,10 @@ If you skip this step, AZ-IDN-002 will produce a finding by default (it cannot v
 
 ## Step 5 — Configure Your .env File
 
-Copy the example and fill in your values:
+Create a `.env` file and fill in your values:
 
 ```bash
-cp .env.example .env
+touch .env
 ```
 
 Edit `.env`:
@@ -105,6 +111,8 @@ AZURE_TENANT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 DATABASE_URL=postgresql://openshield:openshield@localhost:5432/openshield
 JWT_SECRET=your-random-secret-at-least-32-chars
 SENTINEL_WORKSPACE_ID=
+SENTINEL_SHARED_KEY=
+SENTINEL_LOG_TYPE=OpenShieldFindings
 ```
 
 ---
@@ -163,6 +171,59 @@ curl -X POST http://localhost:5000/api/scans/trigger \
   -d '{"subscription_id": "your-subscription-id"}'
 ```
 
+Compliance posture is available through `/api/compliance/cis`, `/api/compliance/nist`, `/api/compliance/iso27001`, and `/api/compliance/soc2`.
+
+---
+
+## Azure App Service Deployment
+
+> **Note:** The Flask API is deployed on Render (render.com) rather than Azure App Service F1. Azure App Service F1 sleeps after 20 minutes of inactivity and has a 60 CPU minute per day limit which is not suitable for demo use. See the Render deployment section below for setup instructions.
+
+---
+
+## Render Deployment (Recommended for API)
+
+Render provides a free tier that is better suited for the OpenShield API than Azure App Service F1.
+
+### Steps
+
+1. Create a free account at render.com
+2. Click New → Web Service
+3. Connect your GitHub account and select `openshield-org/openshield`
+4. Configure:
+   - Name: `openshield-api`
+   - Branch: `main`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `gunicorn api.app:create_app()`
+   - Instance Type: `Free`
+
+5. Add environment variables under Environment:
+
+```
+AZURE_SUBSCRIPTION_ID=your-subscription-id
+AZURE_CLIENT_ID=your-client-id
+AZURE_CLIENT_SECRET=your-client-secret
+AZURE_TENANT_ID=your-tenant-id
+DATABASE_URL=your-postgresql-connection-string
+JWT_SECRET=your-secret-key
+```
+
+6. Create a PostgreSQL database:
+   - Click New → PostgreSQL
+   - Name: `openshield-db`
+   - Copy the Internal Database URL into `DATABASE_URL` above
+
+7. Deploy — Render will build and deploy automatically
+
+8. Your API will be live at:
+   `https://openshield-api.onrender.com`
+
+### Known Limitations
+
+- Free tier spins down after 15 minutes of inactivity
+- First request after spin down takes 30 to 60 seconds
+- Suitable for demo and testing, not production
+
 ---
 
 ## Step 8 — Activate the Microsoft Sentinel 90-Day Trial (Optional)
@@ -176,7 +237,25 @@ Microsoft Sentinel includes a 90-day free trial for new Log Analytics workspaces
    - Region: choose the same region as your resources
 4. Click **Add Microsoft Sentinel** — the 90-day trial activates automatically.
 5. Copy the **Workspace ID** from the workspace Overview page.
-6. Add it to your `.env`: `SENTINEL_WORKSPACE_ID=<workspace-id>`
+6. Copy a shared key from **Agents** or with the Azure CLI:
+
+```bash
+az monitor log-analytics workspace get-shared-keys \
+  --resource-group <resource-group> \
+  --workspace-name <workspace-name> \
+  --query primarySharedKey \
+  --output tsv
+```
+
+7. Add these values to your `.env`:
+
+```
+SENTINEL_WORKSPACE_ID=<workspace-id>
+SENTINEL_SHARED_KEY=<primary-shared-key>
+SENTINEL_LOG_TYPE=OpenShieldFindings
+```
+
+`sentinel/ingest.py` reads a findings JSON file, normalises each finding, signs the request with `SENTINEL_SHARED_KEY`, and sends records to the `OpenShieldFindings_CL` custom log table.
 
 > **Cost after trial:** ~$2.76/GB ingested. For a small subscription with few findings, this is negligible.
 
