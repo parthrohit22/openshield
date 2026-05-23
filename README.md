@@ -190,7 +190,7 @@ MIT — free to use, modify, and distribute.
 
 ---
 
-## 📚 Learn OpenShield
+## Learn OpenShield
 
 Explore the OpenShield learning portal to understand:
 
