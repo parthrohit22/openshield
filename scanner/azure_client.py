@@ -240,6 +240,7 @@ class AzureClient:
             logger.error("get_virtual_networks failed: %s", exc)
             return []
 
+    
     def get_public_ip_addresses(self) -> List[Any]:
         """List all public IP addresses in the subscription."""
         try:
@@ -261,6 +262,16 @@ class AzureClient:
         except Exception as exc:
             logger.error("get_virtual_machines failed: %s", exc)
             return []
+
+
+
+   def get_vm_extensions(self, resource_group: str, vm_name: str) -> Optional[List[Any]]:
+        try:
+            result = ComputeManagementClient(self.credential, self.subscription_id).virtual_machine_extensions.list(resource_group, vm_name)
+            return list(getattr(result, "value", []) or [])
+        except Exception as exc:
+            logger.error("get_vm_extensions failed for %s/%s: %s", resource_group, vm_name, exc)
+            return None
 
     # ------------------------------------------------------------------ #
     # Databases                                                             #
