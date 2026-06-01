@@ -114,6 +114,7 @@ def create_app() -> Flask:
     # ------------------------------------------------------------------ #
     # Blueprints                                                            #
     # ------------------------------------------------------------------ #
+    from api.routes.ai import ai_bp
     from api.routes.compliance import compliance_bp
     from api.routes.findings import findings_bp
     from api.routes.scans import scans_bp
