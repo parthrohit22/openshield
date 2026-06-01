@@ -107,8 +107,8 @@ def build_vectorstore():
 
     try:
         client.delete_collection(COLLECTION_NAME)
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.info("Could not delete collection '%s' before rebuild: %s", COLLECTION_NAME, exc)
     collection = client.create_collection(COLLECTION_NAME)
 
     documents = (

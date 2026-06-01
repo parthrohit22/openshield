@@ -2,9 +2,8 @@
 
 import json
 import secrets
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
-import pytest
 
 
 def _fake_api_key() -> str:

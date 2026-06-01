@@ -18,7 +18,6 @@ import urllib.error
 from unittest.mock import patch, MagicMock
 
 # Clear the module cache before import so previous test runs don't bleed in
-import scanner.nvd_client as nvd_module
 from scanner.nvd_client import query_nvd, _parse_cve_item, _cache
 
 
