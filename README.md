@@ -205,7 +205,7 @@ MIT — free to use, modify, and distribute.
 
 ## Learn OpenShield
 
-Explore the OpenShield learning portal to understand:
+Learn OpenShield covers:
 
 - Azure CSPM fundamentals
 - OpenShield architecture
@@ -214,5 +214,4 @@ Explore the OpenShield learning portal to understand:
 - Contributor onboarding
 - Documentation navigation
 
-👉 [OpenShield Learn](docs/learn/index.html)
-> Built by security engineers and students who believe cloud security tooling should be accessible to everyone.
+Live Learning Portal: https://openshieldlearn.netlify.app/learn/
