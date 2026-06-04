@@ -535,9 +535,21 @@
     }
 
     .roadmap-item {
+      display: block;
       padding: 20px;
       position: relative;
       overflow: hidden;
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .roadmap-item:hover,
+    .roadmap-item:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(56, 189, 248, 0.52);
+      background: rgba(15, 23, 42, 0.98);
+      outline: none;
     }
 
     .roadmap-item::before {
@@ -563,6 +575,15 @@
     .roadmap-item p {
       color: var(--muted);
       font-size: 14px;
+    }
+
+    .card-action {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 14px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 900;
     }
 
     .search-panel {
@@ -861,14 +882,14 @@
       </p>
 
       <div class="roadmap">
-        <article class="roadmap-item"><h3>Azure security fundamentals</h3><p>Understand subscriptions, identities, resources, networking, storage, Key Vault, and logging.</p></article>
-        <article class="roadmap-item"><h3>CSPM concepts</h3><p>Learn how posture tools detect insecure cloud configuration and why false positives matter.</p></article>
-        <article class="roadmap-item"><h3>OpenShield architecture</h3><p>Trace the flow from Azure SDK collection to scanner rules, enrichment, storage, API, and dashboard.</p></article>
-        <article class="roadmap-item"><h3>Rule engineering</h3><p>Study rule structure, metadata, severity, categories, and safe test scenarios.</p></article>
-        <article class="roadmap-item"><h3>Compliance mapping</h3><p>Map technical findings to CIS, NIST CSF, ISO 27001, and SOC 2 without forcing weak mappings.</p></article>
-        <article class="roadmap-item"><h3>Remediation playbooks</h3><p>Write CLI guidance that fixes the issue and includes validation commands.</p></article>
-        <article class="roadmap-item"><h3>Sentinel integration</h3><p>Understand optional Log Analytics ingestion and KQL analytics rules for security monitoring.</p></article>
-        <article class="roadmap-item"><h3>AI security features</h3><p>Review the RAG pipeline, knowledge loaders, retriever, and AI insight routes.</p></article>
+        <a class="roadmap-item" href="../azure-setup.md"><h3>Azure security fundamentals</h3><p>Understand subscriptions, identities, resources, networking, storage, Key Vault, and logging.</p><span class="card-action">Read</span></a>
+        <a class="roadmap-item" href="../architecture.md"><h3>CSPM concepts</h3><p>Learn how posture tools detect insecure cloud configuration and why false positives matter.</p><span class="card-action">Read</span></a>
+        <a class="roadmap-item" href="../architecture.md"><h3>OpenShield architecture</h3><p>Trace the flow from Azure SDK collection to scanner rules, enrichment, storage, API, and dashboard.</p><span class="card-action">Read</span></a>
+        <a class="roadmap-item" href="../adding-a-rule.md"><h3>Rule engineering</h3><p>Study rule structure, metadata, severity, categories, and safe test scenarios.</p><span class="card-action">Read</span></a>
+        <a class="roadmap-item" href="../rules-reference.md"><h3>Compliance mapping</h3><p>Map technical findings to CIS, NIST CSF, ISO 27001, and SOC 2 without forcing weak mappings.</p><span class="card-action">Read</span></a>
+        <a class="roadmap-item" href="../adding-a-rule.md"><h3>Remediation playbooks</h3><p>Write CLI guidance that fixes the issue and includes validation commands.</p><span class="card-action">Read</span></a>
+        <a class="roadmap-item" href="../sentinel-setup.md"><h3>Sentinel integration</h3><p>Understand optional Log Analytics ingestion and KQL analytics rules for security monitoring.</p><span class="card-action">Read</span></a>
+        <a class="roadmap-item" href="../cve_correlation_feature.md"><h3>AI security features</h3><p>Review the RAG pipeline, knowledge loaders, retriever, and AI insight routes.</p><span class="card-action">Read</span></a>
       </div>
     </section>
 
@@ -954,6 +975,26 @@
         <div class="resource-item">
           <div><strong>Adding a Rule</strong><span>Contributor workflow for implementing, testing, and documenting a new check.</span></div>
           <a class="button small secondary" href="../adding-a-rule.md">Open</a>
+        </div>
+        <div class="resource-item">
+          <div><strong>CI Pipeline</strong><span>Local and GitHub Actions checks for rules, playbooks, compliance JSON, and API syntax.</span></div>
+          <a class="button small" href="../ci-pipeline.md">Open</a>
+        </div>
+        <div class="resource-item">
+          <div><strong>CVE Correlation</strong><span>NVD enrichment, CVSS scoring, exploit availability, and dashboard-ready CVE fields.</span></div>
+          <a class="button small" href="../cve_correlation_feature.md">Open</a>
+        </div>
+        <div class="resource-item">
+          <div><strong>Sentinel Setup</strong><span>Log Analytics ingestion, OpenShield findings table setup, and KQL analytics rules.</span></div>
+          <a class="button small" href="../sentinel-setup.md">Open</a>
+        </div>
+        <div class="resource-item">
+          <div><strong>API Render Deploy</strong><span>Render deployment test plan, smoke testing, and production JWT requirements.</span></div>
+          <a class="button small" href="../api-render-deploy.md">Open</a>
+        </div>
+        <div class="resource-item">
+          <div><strong>AZ-STOR-003 Test Plan</strong><span>Lifecycle management policy rule test setup, execution, remediation, and validation.</span></div>
+          <a class="button small" href="../az-stor-003-test-plan.md">Open</a>
         </div>
       </div>
     </section>
