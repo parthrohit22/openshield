@@ -9,6 +9,8 @@ from api.models.finding import DatabaseManager
 
 _PLAYBOOKS_DIR = Path(__file__).parent.parent.parent / "playbooks" / "cli"
 
+_PLAYBOOKS_DIR = Path(__file__).parent.parent.parent / "playbooks" / "cli"
+
 findings_bp = Blueprint("findings", __name__)
 logger = logging.getLogger(__name__)
 

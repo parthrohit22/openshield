@@ -349,6 +349,44 @@ test(
     "GET", "/api/score/cve-summary",
     lambda s, b: "status" in b,
 )
+test(
+    "TC-24 GET /api/prioritization returns matrix and rankings keys",
+    "GET", "/api/prioritization",
+    lambda s, b: "matrix" in b and "rankings" in b and isinstance(b["matrix"], list),
+)
+test(
+    "TC-25 GET /api/drift returns 200",
+    "GET", "/api/drift",
+    lambda s, b: s == 200,
+)
+test(
+    "TC-26 GET /api/drift returns summary and events keys",
+    "GET", "/api/drift",
+    lambda s, b: "summary" in b and "events" in b and isinstance(b["events"], list),
+)
+
+# Playbook test: fetch a real finding ID first, then probe its playbook.
+print("\n=== Playbook Endpoint ===")
+_finding_status, _finding_body = request("GET", "/api/findings")
+_finding_id = (
+    _finding_body.get("findings", [{}])[0].get("id")
+    if _finding_status == 200 and _finding_body.get("findings")
+    else None
+)
+if _finding_id is not None:
+    test(
+        f"TC-27 GET /api/findings/{_finding_id}/playbook returns 200",
+        "GET", f"/api/findings/{_finding_id}/playbook",
+        lambda s, b: s == 200,
+    )
+    test(
+        f"TC-28 GET /api/findings/{_finding_id}/playbook returns playbook keys",
+        "GET", f"/api/findings/{_finding_id}/playbook",
+        lambda s, b: all(k in b for k in ("portal_steps", "cli_commands", "validation_steps")),
+    )
+else:
+    skip("TC-27 GET /api/findings/<id>/playbook returns 200", "No findings in DB — seed the database first.")
+    skip("TC-28 GET /api/findings/<id>/playbook returns playbook keys", "No findings in DB — seed the database first.")
 
 # ── TC-29 to TC-32: General edge cases ────────────────────────────────────
 print("\n=== Edge Cases ===")
