@@ -243,6 +243,16 @@ MIT — free to use, modify, and distribute.
 
 ## Learn OpenShield
 
+Learn OpenShield covers:
+
+- Azure CSPM fundamentals
+- OpenShield architecture
+- Compliance mappings
+- Remediation workflows
+- Contributor onboarding
+- Documentation navigation
+
+Live Learning Portal: https://openshieldlearn.netlify.app/learn/
 Full documentation, the security rules gallery, blog, and interactive playground are available at the project website:
 
 **[openshield-website.vercel.app](https://openshield-website.vercel.app)**
