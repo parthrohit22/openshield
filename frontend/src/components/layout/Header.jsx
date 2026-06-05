@@ -5,7 +5,6 @@ import {
   FiLoader, FiZap, FiCheckCircle, FiAlertCircle, FiClock,
 } from 'react-icons/fi';
 import { api } from '../../utils/api';
-import Logo from '../shared/Logo';
 
 const PAGE_TITLES = {
   '/monitoring':     { title: 'Security Monitoring',  subtitle: 'Overall health score and trends' },
